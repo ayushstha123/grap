@@ -1,7 +1,7 @@
 import graphql from 'graphql';
 import _ from 'lodash';
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID,GraphQLInt } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID,GraphQLInt ,GraphQLList} = graphql;
 
 // Dummy data
 var books = [
@@ -22,6 +22,12 @@ const AuthorType=new GraphQLObjectType({
         id:{type:GraphQLID},
         name:{type:GraphQLString},
         age:{type:GraphQLInt},
+        books:{
+            type:new GraphQLList(BookType),
+            resolve(parent,args){
+                return _.filter(books,{authorID:parent.id})
+            }
+        }
     })
 })
 
