@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 const authorSchema=mongoose.Schema({
     name:String,
-    age:Number,
+    age:Number
     
 })
-module.exports=mongoose.model("Author",authorSchema);
+const Author=mongoose.model("Author",authorSchema);
+export default Author;
