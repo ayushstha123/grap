@@ -1,19 +1,28 @@
-import React from 'react'
-import ApolloClient from '@apollo/client'
-import { ApolloProvider } from '@apollo/client'
-
+import React from 'react';
+import  {useQuery} from '@apollo/client';
+import {getBooks} from '../queries/queries';
 const BookList = () => {
-    const client new ApolloClient({
-        uri: 'http://localhost:4000/graphql',
-    })
-  return (
-    <ApolloProvider client={client}>
-    <div>
-        <ul id='book-list'>
-            <li>Book Name</li>
-            </ul>
-    </div></ApolloProvider>
-  )
-}
 
-export default BookList
+
+  // Use useQuery hook to execute the GraphQL query
+  const { loading, error, data } = useQuery(getBooks);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Extract the list of books from the data
+  const books = data.books;
+
+  return (
+    <div>
+      <ul id='book-list'>
+        {/* Iterate over the books and display them */}
+        {books.map((book) => (
+          <li key={book.id}>{book.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default BookList;
