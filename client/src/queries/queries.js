@@ -18,4 +18,13 @@ export const getBooks = gql`
   }
 `;
 
+export const addBookMutation=gql`
+mutation{
+    addBook(name:'', genre:'', authorID:''){
+        name
+        id
+    }
+}
+`;
+
 
