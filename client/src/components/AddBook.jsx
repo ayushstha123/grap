@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import {useQuery} from '@apollo/client';
+import {useMutation, useQuery} from '@apollo/client';
 import {getAuthorsQuery,addBookMutation} from '../queries/queries';
-
+import { getBooks } from '../queries/queries';
 
 const AddBook = () => {
     const { loading, error, data } = useQuery(getAuthorsQuery);
@@ -10,7 +10,7 @@ const AddBook = () => {
         genre:'',
         authorID:'',
     });
-
+const [addBook]=useMutation(addBookMutation);
     const handleInputChange=(e)=>{
         const {name,value}=e.target;
         setFormData({
@@ -21,7 +21,16 @@ const AddBook = () => {
 
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(formData);
+        addBook({
+            variables:{
+                name:formData.name,
+                genre:formData.genre,
+                authorID:formData.authorID,
+            },
+            refetchQueries:[{query:getBooks}]
+
+        })
+      
 
         setFormData({
             name:'',

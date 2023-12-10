@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import  {useQuery} from '@apollo/client';
 import {getBooks} from '../queries/queries';
+import BookDetails from './BookDetails';
 const BookList = () => {
-
+const [selectedBookID,setSelectedBookID]=useState(null);
 
   // Use useQuery hook to execute the GraphQL query
   const { loading, error, data } = useQuery(getBooks);
@@ -12,15 +13,22 @@ const BookList = () => {
 
   // Extract the list of books from the data
   const books = data.books;
+const handleSelected=(id)=>{
+setSelectedBookID(id);
+}
 
   return (
     <div>
       <ul id='book-list'>
         {/* Iterate over the books and display them */}
         {books.map((book) => (
-          <li key={book.id}>{book.name}</li>
+          <li key={book.id} onClick={()=>handleSelected(book.id)}>{book.name}</li>
+        
         ))}
-      </ul>
+{          console.log(selectedBookID)
+}      </ul>
+
+{<BookDetails bookId={selectedBookID} />}
     </div>
   );
 };
